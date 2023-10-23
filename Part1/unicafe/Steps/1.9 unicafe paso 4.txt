@@ -1,0 +1,99 @@
+// Imports
+import React, { useState } from 'react'
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
+
+// 👇️ IMPORTANT: use correct ID of your root element
+// this is the ID of the div in your index.html file
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+// Componente Button
+const Button = ({ onClick, text }) => { 
+  return (
+    <>
+      <button onClick={onClick}>
+        {text}
+      </button>
+    </>
+  )
+}
+
+const Statistics = ({ good, neutral, bad, all, positive, avg }) => {
+  if (all > 0) {
+    return (
+      <>
+        <p>
+          Good: {good}
+        </p>
+        <p>
+            Neutral: {neutral}
+        </p>
+        <p>
+          Bad: {bad} 
+        </p>
+        <p>
+          All: {all} 
+        </p>
+        <p>
+          Average: {avg} 
+        </p>
+        <p>
+          Positive: {positive} % 
+        </p>
+      </>
+    )
+  }
+
+    return (
+      <>
+        <p>
+          No feedback given
+        </p>
+      </>
+    )
+}
+  
+// Componente App
+const App = () => {
+  
+  // Hooks
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [allFeedbacks, setAllFeedbacks] = useState(0)
+
+  const increaseGood = () => {
+        setGood(good + 1)
+        setAllFeedbacks(allFeedbacks + 1)
+      }
+  const increaseNeutral = () => {
+        setNeutral(neutral + 1)
+        setAllFeedbacks(allFeedbacks + 1)
+      }
+  const increaseBad = () => {
+        setBad(bad + 1)
+        setAllFeedbacks(allFeedbacks + 1)
+      }
+
+  return (
+    <div>
+      <h1>Give feedback</h1>
+      <Button onClick = {increaseGood} text = 'Good' />
+      <Button onClick = {increaseNeutral} text = 'Neutral' />
+      <Button onClick = {increaseBad} text = 'Bad' />
+      {/* Espacio para agregar más botones */}
+      <h1>Statistics</h1>
+      <Statistics good = {good} neutral = {neutral} bad = {bad} avg = {(good - bad) / allFeedbacks} all={allFeedbacks} positive={(good / allFeedbacks) * 100}  />
+      
+    </div>
+  )
+}
+
+// Se renderiza el componente App en el elemento de id "root" de nuestro documento.
+// ReactDOM.render(<App />, document.getElementById('root'))
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
